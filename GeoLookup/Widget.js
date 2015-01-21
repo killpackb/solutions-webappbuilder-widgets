@@ -33,6 +33,7 @@ define(['dojo/_base/declare',
         'esri/tasks/QueryTask', 
         'esri/tasks/query',
         './MapCSV',
+        'jimu/dijit/Message',
         'esri/SpatialReference'
     ],
 
@@ -40,22 +41,20 @@ define(['dojo/_base/declare',
         Graphic, Color, dom, on, webMercatorUtils, 
         FeatureLayer, lang, arrayUtils, CsvStore, base64,
         Point, Multipoint, InfoTemplate, QueryTask, 
-        Query, MapCSV, SpatialReference) {
+        Query, MapCSV, Message, SpatialReference) {
         //To create a widget, you need to derive from BaseWidget.
 
-        var _map;
-        var _CSVObj;
+       var _CSVObj;
 
         return declare([BaseWidget], {
     
-            baseClass: 'jimu-widget-GeoEnrich',
-            name: 'GeoEnrich',
+            baseClass: 'jimu-widget-GeoLookup',
+            name: 'GeoLookup',
 
             postCreate: function() {
                 this.inherited(arguments);
-                _map = this.map;
                 _CSVObj = new MapCSV();
-                _CSVObj.setParams(this.config,_map);
+                _CSVObj.setParams(this.config,this.map);
             },
 
             startup: function() {
@@ -75,12 +74,24 @@ define(['dojo/_base/declare',
 
             _handleCSVDrop: function(event) {
                 event.preventDefault();
-                var dataTransfer = event.dataTransfer,
-                    files = dataTransfer.files;
-                var file = files[0];
-                if (file) {
-                _CSVObj.handleCSV(file);
-                }
+                var dataTransfer = event.dataTransfer;
+                var files = dataTransfer.files;
+                   if (files.length >0) {
+                        var file = files[0];
+                        if (file.name.indexOf('.csv') !== -1){
+                            if (file) {
+                                _CSVObj.handleCSV(file);
+                            }else{
+                                new Message({
+                                    message: 'File could not be processed.'
+                                 });
+                            }
+                       } else{
+                             new Message({
+                                message: 'Only comma delimited files (.csv) files are supported at this time.'
+                             });
+                       }    
+                    }
             },
 
             onOpen: function() {
@@ -102,6 +113,7 @@ define(['dojo/_base/declare',
             onSignIn: function(credential) {
                 /* jshint unused:false*/
                 //console.log('onSignIn');
+                console.log(credential);
             },
 
             onSignOut: function() {

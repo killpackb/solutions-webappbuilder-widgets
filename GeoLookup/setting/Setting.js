@@ -47,7 +47,7 @@ define([
         Select, ObjectStore, SimpleMarkerSymbol, Color, array, 
         LayerInfos, dom, dijit) {
         return declare([BaseWidgetSetting, _WidgetsInTemplateMixin], {
-            baseClass: 'jimu-widget-GeoEnrich-setting',
+            baseClass: 'jimu-widget-GeoLookup-setting',
 
             _operLayerInfos: null,
 
@@ -197,7 +197,9 @@ define([
             },
 
             _sym1onChange:function(s){
+               
                 _symIn = s.toJson();
+
                 _self.SymbolIn = s.toJson();
             },
 

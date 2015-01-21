@@ -4,5 +4,9 @@
     "queryFields": "GRIDCODE,ID",
     "SymbolIn": {},
     "SymbolOut": {},
-    "outCSV" : true
+    "outCSV" : true,
+    "lookupField" : "GeoLookup",
+    "inVal": "In",
+    "outVal": "Out",
+    "outCSVName": "GeoLookup"
 }
